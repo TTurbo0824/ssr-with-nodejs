@@ -1,16 +1,10 @@
 const express = require('express');
 const app = express();
+const controllers = require('./controllers');
 
-app.listen(80, () => console.log('listening at 80'));
+app.listen(80, () => console.log('http server running on port 80'));
 app.use(express.static('public'));
 app.use(express.json({ limit: '1mb' }));
 
-app.post('/api', (request, response) => {
-  console.log(request.body);
-  const data = request.body;
-  response.status(200).json({
-    message: 'success',
-    latitude: data.lat,
-    longitude: data.lon
-  });
-});
+app.get('/geolocation', controllers.getAllRecords);
+app.post('/geolocation', controllers.getGeolocation);
