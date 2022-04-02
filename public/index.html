@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.4.1/lib/p5.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.dom.min.js"></script> -->
     <title>Geolocator</title>
   </head>
   <body>
@@ -14,38 +17,49 @@
     <p>longitude: <span id="longitude"></span>&deg;</p>
     <button id="geo-bnt">submit</button>
     <script>
-      const geoBnt = document.getElementById('geo-bnt');
-      geoBnt.addEventListener('click', () => geoClicked());
+      function setup() {
+        noCanvas();
+        const video = createCapture(VIDEO);
+        video.size(320, 240);
 
-      const geoClicked = () => {
-        if ('geolocation' in navigator) {
-          console.log('geolocation available');
-          geoBnt.innerHTML = 'loading';
-          navigator.geolocation.getCurrentPosition(async (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
+        const geoBnt = document.getElementById('geo-bnt');
+        geoBnt.addEventListener('click', () => geoClicked());
 
-            const data = { lat, lon };
+        const geoClicked = () => {
+          if ('geolocation' in navigator) {
+            console.log('geolocation available');
+            geoBnt.innerHTML = 'loading';
+            navigator.geolocation.getCurrentPosition(async (position) => {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
 
-            options = {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(data)
-            };
+              const data = { lat, lon };
+              video.loadPixels();
 
-            const response = await fetch('/geolocation', options);
-            const json = await response.json();
+              const image64 = video.canvas.toDataURL();
+              
+              console.log(image64);
+              options = {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+              };
 
-            geoBnt.innerHTML = 'submit';
-            document.getElementById('latitude').innerHTML = json.data.latitude;
-            document.getElementById('longitude').innerHTML = json.data.longitude;
-          });
-        } else {
-          console.log('geolocation not available');
-        }
-      };
+              const response = await fetch('/geolocation', options);
+              const json = await response.json();
+
+              geoBnt.innerHTML = 'submit';
+              document.getElementById('latitude').innerHTML = json.data.latitude;
+              document.getElementById('longitude').innerHTML = json.data.longitude;
+            });
+          } else {
+            console.log('geolocation not available');
+          }
+        };
+       
+      }
     </script>
   </body>
 </html>
