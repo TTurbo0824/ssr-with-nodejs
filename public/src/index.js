@@ -21,6 +21,7 @@ const geoClicked = () => {
 
       const response = await fetch('/geolocation', options);
       const json = await response.json();
+      console.log(json);
 
       geoBnt.innerHTML = 'submit';
       document.getElementById('latitude').innerHTML = json.data.latitude;
