@@ -20,12 +20,15 @@ const geoClicked = () => {
       };
 
       const response = await fetch('/geolocation', options);
-      const json = await response.json();
-      console.log(json);
+      let json = await response.json();
+      json = json.data;
+      // console.log(json);
 
       geoBnt.innerHTML = 'submit';
-      document.getElementById('latitude').innerHTML = json.data.latitude;
-      document.getElementById('longitude').innerHTML = json.data.longitude;
+      document.getElementById('latitude').innerHTML = json.latitude;
+      document.getElementById('longitude').innerHTML = json.longitude;
+      const weather = document.getElementById('weather');
+      weather.textContent = `The weather in ${json.city} is ${json.weather} with a temperature of ${json.temperature}°C`;
     });
   } else {
     console.log('geolocation not available');

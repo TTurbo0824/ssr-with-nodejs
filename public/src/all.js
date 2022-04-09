@@ -15,12 +15,14 @@ async function getData() {
     time.textContent = `time: ${item.time}`;
     const city = document.createElement('div');
     city.textContent = `city: ${item.city}`;
+    const weather = document.createElement('div');
+    weather.textContent = `weather: ${item.weather}`;
     const temperature = document.createElement('div');
     temperature.textContent = `temperature: ${item.temperature}°C`;
     const geo = document.createElement('div');
     geo.textContent = `latitude: ${item.latitude}° longitude: ${item.longitude}°`;
 
-    itemContainer.append(time, city, temperature, geo);
+    itemContainer.append(time, city, weather, temperature, geo);
     root.append(itemContainer);
   }
 }

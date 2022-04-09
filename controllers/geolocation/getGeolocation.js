@@ -21,6 +21,11 @@ module.exports = async (request, response) => {
       pressure: 1017,
       humidity: 20
     },
+    weather: [
+      {
+        main: 'Clear',
+      }
+    ],
     name: 'Seoul'
   };
 
@@ -35,6 +40,7 @@ module.exports = async (request, response) => {
     latitude: lat,
     longitude: lon,
     city: fetchData.name,
+    weather: fetchData.weather[0].main,
     temperature: temp
   };
   database.insert(payload);
