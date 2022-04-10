@@ -1,4 +1,6 @@
 const geoBnt = document.getElementById('geo-bnt');
+const weather = document.getElementById('weather');
+weather.classList.add('invisible');
 geoBnt.addEventListener('click', () => geoClicked());
 
 const geoClicked = () => {
@@ -25,9 +27,8 @@ const geoClicked = () => {
       // console.log(json);
 
       geoBnt.innerHTML = 'submit';
-      document.getElementById('latitude').innerHTML = json.latitude;
-      document.getElementById('longitude').innerHTML = json.longitude;
-      const weather = document.getElementById('weather');
+     
+      weather.classList.remove('invisible');
       weather.textContent = `The weather in ${json.city} is ${json.weather} with a temperature of ${json.temperature}°C`;
     });
   } else {
